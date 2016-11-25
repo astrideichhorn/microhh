@@ -45,6 +45,9 @@ class Thermo_dry : public Thermo
         void init();
         void create(Input*);
         void exec();                ///< Add the tendencies belonging to the buoyancy.
+        unsigned long get_time_limit(unsigned long, double); ///< Compute the time limit (n/a for thermo_dry)
+
+
         void exec_stats(Mask*);
         void exec_cross();
         void exec_dump();
@@ -85,7 +88,7 @@ class Thermo_dry : public Thermo
         void calc_buoyancy_tend_2nd(double *, double *, double *); ///< Calculation of the buoyancy tendency with 2nd order accuracy.
         void calc_buoyancy_tend_4th(double *, double *, double *); ///< Calculation of the buoyancy tendency with 4th order accuracy.
 
-        void init_base_state(double *, double *, double *, double *, double *, double *, double *, double *, double); ///< For anelastic setup, calculate base state from initial input profiles
+        void calc_base_state(double *, double *, double *, double *, double *, double *, double *, double *, double); ///< For anelastic setup, calculate base state from initial input profiles
 
         Stats* stats;
 
@@ -98,15 +101,15 @@ class Thermo_dry : public Thermo
         double* threfh;
         double* pref;
         double* prefh;
-        double* exner;
-        double* exnerh;
+        double* exnref;
+        double* exnrefh;
 
         // GPU functions and variables
         double* thref_g;
         double* threfh_g;
         double* pref_g;
         double* prefh_g;
-        double* exner_g;
-        double* exnerh_g;
+        double* exnref_g;
+        double* exnrefh_g;
 };
 #endif
