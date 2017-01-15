@@ -263,7 +263,7 @@ void Fields::exec()
     // calculate the means for the prognostic scalars
     if (calc_mean_profs)
     {
-        for (FieldMap::iterator it=sp.begin(); it!=sp.end(); ++it)
+        for (FieldMap::iterator it=ap.begin(); it!=ap.end(); ++it)
             grid->calc_mean(it->second->datamean, it->second->data, grid->kcells);
     }
 }
@@ -723,16 +723,16 @@ int Fields::randomize(Input* inputin, std::string fld, double* restrict data)
     nerror += inputin->get_item(&rndz  , "fields", "rndz"  , fld, 0.);
     nerror += inputin->get_item(&rndexp, "fields", "rndexp", fld, 0.);
 
-    // Find the location of the randomizer height.
-    int kendrnd = grid->kstart;
-    while (grid->z[kendrnd] < rndz)
-        ++kendrnd;
-
     if (rndz > grid->zsize)
     {
         master->print_error("randomizer height rndz (%f) higher than domain top (%f)\n", rndz, grid->zsize);
         return 1;
     }
+
+    // Find the location of the randomizer height.
+    int kendrnd = grid->kstart;
+    while (grid->z[kendrnd] < rndz)
+        ++kendrnd;
 
     // Issue a warning if the randomization depth is larger than zero, but less than the first model level.
     if (kendrnd == grid->kstart && rndz > 0.)
